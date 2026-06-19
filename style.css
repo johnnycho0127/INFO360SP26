@@ -241,7 +241,7 @@ body {
     font-size: 0.75rem;
     padding: 4px 10px;
     border: 1px solid var(--primary);
-    border-radius: 999px;
+    border-radius: 5px;
 }
 
 .keyword {
@@ -250,7 +250,7 @@ body {
     color: var(--text-muted);
     padding: 4px 11px;
     border: 1px solid var(--highlight);
-    border-radius: 999px;
+    border-radius: 5px;
     background-color: var(--bg-alt);
     transition: background-color 0.18s ease, transform 0.18s ease;
     cursor: default;
