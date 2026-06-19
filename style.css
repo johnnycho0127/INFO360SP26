@@ -171,6 +171,14 @@ body {
     display: block;
 }
 
+.logo-small {
+    transform: scale(1);
+}
+
+.logo-large {
+    transform: scale(1.1);
+}
+
 .project-card:hover .card-image img {
     transform: scale(1.04);
 }
@@ -1311,4 +1319,3 @@ body.dark-mode .team-badge {
         min-width: 220px;
     }
 }
-
