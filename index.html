@@ -8,6 +8,343 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 
+    <style>
+        :root {
+            --bg-primary: #D6E2DE;
+            --bg-alt: #FAE9F0;
+            --surface: #FFFFFF;
+            --surface-tint: rgba(184, 212, 212, 0.15);
+
+            --border: #B0C2AE;
+            --border-soft: #D6E2DE;
+            --border-accent: #8DA280;
+
+            --text-dark: #2F3A34;
+            --text-muted: #5E6B63;
+            --text-light: #FAE9F0;
+
+            --link-color: #4C8C8A;
+            --link-hover: #3E726F;
+            --link-visited: #7A9C8F;
+
+            --primary: #8DA280;
+            --secondary: #B8D4D4;
+            --highlight: #EBCDD9;
+
+            --_danger:        #C0392B;
+            --_danger-bg:     #FFF1F0;
+            --_danger-border: #FFD0CC;
+            --_success:       #1A7A4A;
+
+            --shadow: 0 10px 30px rgba(47, 58, 52, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header / Hero */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 55%, var(--secondary) 100%);
+            padding: 100px 0 60px;
+            text-align: center;
+            border-bottom: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-code {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--surface);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+        }
+
+        h1 {
+            margin: 20px 0 10px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--surface);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 1.1rem;
+        }
+
+        /* Search Bar */
+        .controls {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(214, 226, 222, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+
+        .search-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            background: var(--surface);
+            color: var(--text-dark);
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(141, 162, 128, 0.15);
+        }
+
+        /* Grid Layout */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding-bottom: 80px;
+        }
+
+        /* Card Styling */
+        .project-card {
+            background: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(176, 194, 174, 0.5);
+            box-shadow: 0 1px 4px rgba(47, 58, 52, 0.06), 0 4px 16px rgba(141, 162, 128, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 40px rgba(141, 162, 128, 0.22), 0 2px 8px rgba(47, 58, 52, 0.08);
+        }
+
+        .card-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-primary);
+        }
+
+        /* Soft gradient fade at the image bottom */
+        .card-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--surface));
+            pointer-events: none;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .project-card:hover .card-image img {
+            transform: scale(1.04);
+        }
+
+        .team-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.88);
+            color: var(--text-dark);
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(176, 194, 174, 0.4);
+        }
+
+        .card-content {
+            padding: 22px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .meta-info {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 10px;
+            text-transform: none;
+            letter-spacing: 0.02em;
+            opacity: 0.85;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        /* Abstract — collapsed by default, 3 lines */
+        .description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .description.expanded {
+            display: block;
+            -webkit-line-clamp: unset;
+            overflow: visible;
+        }
+
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: var(--link-color);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            margin-bottom: 18px;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            opacity: 0.8;
+            transition: opacity 0.15s ease;
+        }
+
+        .read-more-btn:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .keywords-container {
+            margin-top: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+
+        .keyword {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #A0687A;
+            padding: 4px 11px;
+            background-color: #FAE9F0;
+            border: 1px solid #EFD5E0;
+            border-radius: 5px;
+            letter-spacing: 0.01em;
+            transition: background-color 0.18s ease, transform 0.18s ease;
+        }
+
+        .keyword:hover {
+            background: var(--highlight);
+            transform: translateY(-1px);
+        }
+
+        /* Links row */
+        .card-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid rgba(176, 194, 174, 0.3);
+            margin-top: auto;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            border: 1px solid var(--border-accent);
+            background: var(--surface);
+            color: var(--link-color);
+            transition: background-color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .project-link:hover {
+            background: var(--bg-primary);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(141, 162, 128, 0.18);
+            text-decoration: none;
+        }
+
+        /* Video link — soft teal */
+        .project-link.video-link {
+            background: var(--secondary);
+            color: var(--link-hover);
+            border-color: var(--secondary);
+        }
+
+        .project-link.video-link:hover {
+            background: var(--border-soft);
+            border-color: var(--border);
+        }
+
+        /* Interactive — sage green pill */
+        .project-link.interactive-link {
+            background: var(--primary);
+            color: var(--surface);
+            border-color: var(--primary);
+        }
+
+        .project-link.interactive-link:hover {
+            background: var(--link-hover);
+            border-color: var(--link-hover);
+            text-decoration: none;
+        }
 
         /* =========================
    Chatbot
@@ -242,7 +579,10 @@
     </header>
 
     <section class="controls">
-        <div class="controls-top">
+        <div class="controls-panel">
+            <div class="browse-block">
+            <span class="browse-label">Browse by</span>
+
             <div class="filter-group" id="filter-group">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="education">Education</button>
@@ -250,24 +590,21 @@
                 <button class="filter-btn" data-filter="accessibility">Accessibility</button>
                 <button class="filter-btn" data-filter="mental health">Mental Health</button>
             </div>
+            </div>
 
-            <div class="right-controls">
-                <select id="sort-select" class="sort-select">
-                    <option value="team">⇅ Team Number
-                    </option>
-                    <option value="alphabetical">Alphabetical</option>
-                    <option value="interactive">Most Interactive</option>
-                    <option value="demo">Has Demo</option>
-                </select>
+            <div class="nav-tools">
+            <input type="text" id="search-input" placeholder="Search projects, teams, keywords...">
 
-                <div class="search-wrapper">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="search-input" placeholder="Search by team, student, or keyword...">
-                </div>
+            <select id="sort-select" class="sort-select">
+                <option value="team">Sort by team</option>
+                <option value="alphabetical">Alphabetical</option>
+                <option value="interactive">Most Interactive</option>
+                <option value="demo">Has Demo</option>
+            </select>
 
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-                    🌙
-                </button>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                🌙
+            </button>
             </div>
         </div>
     </section>
