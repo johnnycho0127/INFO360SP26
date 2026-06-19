@@ -1167,3 +1167,148 @@ body.dark-mode .team-badge {
 .project-card:hover .description::after {
     opacity: 0;
 }
+
+/* Nav bar */
+.controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 16px 20px;
+    margin-bottom: 44px;
+    background: rgba(214, 226, 222, 0.72);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(176, 194, 174, 0.35);
+}
+
+.controls-panel {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(176, 194, 174, 0.45);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(47, 58, 52, 0.08);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.browse-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.browse-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(214, 226, 222, 0.55);
+    color: var(--text-dark);
+}
+
+.filter-btn.active {
+    background: var(--bg-alt);
+    color: var(--text-dark);
+    border-color: var(--highlight);
+}
+
+.nav-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+#search-input,
+.sort-select,
+.theme-toggle {
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(176, 194, 174, 0.65);
+    background: var(--surface);
+    color: var(--text-dark);
+    font-size: 0.88rem;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+#search-input {
+    width: 280px;
+    padding: 0 14px;
+}
+
+.sort-select {
+    min-width: 150px;
+    padding: 0 12px;
+}
+
+.theme-toggle {
+    width: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#search-input:focus,
+.sort-select:focus,
+.theme-toggle:focus {
+    outline: none;
+    border-color: var(--link-color);
+    box-shadow: 0 0 0 3px rgba(76, 140, 138, 0.14);
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    .controls-panel {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .browse-block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-tools {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    #search-input {
+        flex: 1;
+        min-width: 220px;
+    }
+}
+
