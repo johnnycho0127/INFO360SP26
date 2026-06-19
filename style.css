@@ -1,12 +1,40 @@
 /* --- CSS Variables --- */
 :root {
-    --primary-purple: #3F2B73;
-    --light-purple: #F3F0FB;
-    --card-border: #C9C2E0;
-    --white: #ffffff;
-    --text-dark: #333333;
-    --text-light: #666666;
-    --link-color: #0066cc;
+    --bg-primary: #D6E2DE;
+    --bg-alt: #FAE9F0;
+    --surface: #FFFFFF;
+    --surface-tint: rgba(184, 212, 212, 0.15);
+
+    --border: #B0C2AE;
+    --border-soft: #D6E2DE;
+    --border-accent: #8DA280;
+
+    --text-dark: #2F3A34;
+    --text-muted: #5E6B63;
+    --text-light: #FAE9F0;
+
+    --link-color: #4C8C8A;
+    --link-hover: #3E726F;
+    --link-visited: #7A9C8F;
+
+    --primary: #8DA280;
+    --secondary: #B8D4D4;
+    --highlight: #EBCDD9;
+
+    /*
+     * Colors NOT in the approved system — recommend adding these to your design tokens:
+     *
+     *   --danger:      #C0392B   (video-link text, error states)
+     *   --danger-bg:   #FFF1F0   (video-link background)
+     *   --danger-border: #FFD0CC (video-link border)
+     *   --success:     #1A7A4A   (interactive-link background)
+     *
+     * Until then, they are declared here as local fallbacks.
+     */
+    --_danger:        #C0392B;
+    --_danger-bg:     #FFF1F0;
+    --_danger-border: #FFD0CC;
+    --_success:       #1A7A4A;
 }
 
 /* --- Base Styles --- */
@@ -17,15 +45,15 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--light-purple);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-primary);
     color: var(--text-dark);
 }
 
 /* --- Header --- */
 .main-header {
-    background-color: var(--primary-purple);
-    color: var(--white);
+    background-color: var(--primary);
+    color: var(--surface);
     padding: 2rem 5%;
     display: flex;
     justify-content: space-between;
@@ -64,16 +92,16 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 2px solid var(--primary-purple);
-    background-color: var(--white);
-    color: var(--primary-purple);
+    border: 2px solid var(--primary);
+    background-color: var(--surface);
+    color: var(--primary);
     font-weight: 600;
 }
 
 .filter-btn.active,
 .filter-btn:hover {
-    background-color: var(--primary-purple);
-    color: var(--white);
+    background-color: var(--primary);
+    color: var(--surface);
 }
 
 #search-input {
@@ -81,9 +109,9 @@ body {
     height: 44px;
     padding: 0 16px;
     border-radius: 999px;
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-main);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dark);
     font-size: 0.95rem;
     box-shadow: none;
 }
@@ -98,131 +126,143 @@ body {
 
 /* --- Cards --- */
 .project-card {
-    background-color: var(--white);
+    background-color: var(--surface);
     border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(63, 43, 115, 0.15);
-    border: 1px solid var(--card-border);
-    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(47, 58, 52, 0.06), 0 4px 16px rgba(141, 162, 128, 0.1);
+    border: 1px solid rgba(176, 194, 174, 0.5);
+    overflow: visible;
     display: flex;
     flex-direction: column;
     height: 100%;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 40px rgba(141, 162, 128, 0.22), 0 2px 8px rgba(47, 58, 52, 0.08);
 }
 
-/* --- Image Styles (Preserved) --- */
+/* --- Image Styles --- */
 .card-image {
     width: 100%;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
-    background-color: #eaeaea;
-    border-bottom: 1px solid var(--card-border);
+    background-color: var(--bg-primary);
+    position: relative;
+}
+
+/* Soft gradient fade at the bottom of the image into the card surface */
+.card-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--surface));
+    pointer-events: none;
 }
 
 .card-image img {
     width: 100%;
     height: 100%;
-    /* CHANGED: 'contain' ensures the whole image is shown */
-    object-fit: contain;
-    /* OPTIONAL: changing background to white often looks cleaner with 'contain' */
-    background-color: white;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
 }
 
-.card-header {
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid var(--card-border);
-    background-color: #fbfaff;
+.project-card:hover .card-image img {
+    transform: scale(1.04);
 }
 
-.card-header h3 {
-    font-size: 1.2rem;
-    color: var(--primary-purple);
-    font-weight: 700;
-    line-height: 1.4;
-}
-
-.card-body {
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: space-between;
-}
-
-.team-info {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed #e0e0e0;
-}
-
-.team-name {
-    font-size: 1rem;
-    font-weight: 700;
+/* Team badge overlaid on image */
+.team-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 255, 255, 0.88);
     color: var(--text-dark);
-    margin-bottom: 0.3rem;
-}
-
-.team-members {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    font-style: italic;
-    line-height: 1.4;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(176, 194, 174, 0.4);
+    box-shadow: 0 1px 4px rgba(47, 58, 52, 0.12);
 }
 
 .description {
-    font-size: 0.95rem;
-    color: var(--text-dark);
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.65;
+
+    max-height: 5.3em; /* about 3–4 lines */
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-card:hover .description {
+    max-height: 40em;
+}
+
+.description::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.6em;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        var(--card-bg, #ffffff)
+    );
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.project-card:hover .description::after {
+    opacity: 0;
 }
 
 .keywords-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 1.5rem;
+    gap: 6px;
+    margin-bottom: 20px;
 }
 
 .keyword-label {
-    color: var(--primary-purple);
+    color: var(--primary);
     font-weight: 600;
-    font-size: 0.85rem;
-    padding: 0.3rem 0.6rem;
-    border: 1px solid var(--primary-purple);
-    border-radius: 12px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border: 1px solid var(--primary);
+    border-radius: 999px;
 }
 
 .keyword {
-    font-size: 0.85rem;
-    color: var(--primary-purple);
-    padding: 0.3rem 0.6rem;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    background-color: #f9f8fd;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 4px 11px;
+    border: 1px solid var(--highlight);
+    border-radius: 999px;
+    background-color: var(--bg-alt);
+    transition: background-color 0.18s ease, transform 0.18s ease;
+    cursor: default;
+    letter-spacing: 0.01em;
 }
 
-/* --- Project Link Button --- */
-.project-link {
-    display: block;
-    text-align: center;
-    background-color: var(--primary-purple);
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-top: auto;
-    /* Pushes button to very bottom */
-    transition: background-color 0.2s;
+.keyword:hover {
+    background-color: var(--highlight);
+    transform: translateY(-1px);
 }
 
-.project-link:hover {
-    background-color: #553b9e;
-}
+/* .project-link base styles are defined in the Spring Pill Buttons section below */
 
 .hidden {
     display: none !important;
@@ -230,12 +270,12 @@ body {
 
 /* --- Footer Section (NEW) --- */
 .footer {
-    background-color: var(--primary-purple);
-    color: var(--white);
+    background-color: var(--primary);
+    color: var(--surface);
     text-align: center;
     padding: 3rem 1rem;
     margin-top: 5rem;
-    box-shadow: 0 -4px 10px rgba(63, 43, 115, 0.2);
+    box-shadow: 0 -4px 10px rgba(141, 162, 128, 0.2);
 }
 
 .contributor {
@@ -274,48 +314,49 @@ body {
    NEW: Theme Variables
 ========================= */
 :root {
-    --primary: #4b2e83;
-    --accent: #b7a57a;
-    --bg: #e8e4f3;
-    --bg-secondary: #f4f1fb;
-    --card-bg: #ffffff;
-    --text-main: #2d3436;
-    --text-muted: #636e72;
-    --border-color: rgba(0, 0, 0, 0.08);
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
-    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.14);
-    --tag-bg: #f0f0f0;
-    --tag-text: #555;
-    --controls-bg: rgba(248, 249, 250, 0.85);
+    --bg: var(--bg-primary);
+    --bg-secondary: var(--bg-alt);
+    --card-bg: var(--surface);
+    --text-main: var(--text-dark);
+    --shadow-soft: 0 10px 30px rgba(47, 58, 52, 0.05);
+    --shadow-hover: 0 20px 40px rgba(47, 58, 52, 0.14);
+    --tag-bg: var(--bg-primary);
+    --tag-text: var(--text-muted);
+    --controls-bg: rgba(214, 226, 222, 0.85);
     --button-fade: 1;
     --button-move: 8px;
 }
 
 body.dark-mode {
-    --primary: #8f6de1;
-    --accent: #d7c48f;
+    /*
+     * Dark mode has no approved tokens. These values are held over from the
+     * original CSS. Recommend adding a dark-mode palette to your design system,
+     * e.g.: --bg-dark, --surface-dark, --text-dark-mode, --border-dark.
+     */
     --bg: #15121d;
     --bg-secondary: #1d1827;
     --card-bg: #211b2d;
     --text-main: #f3f4f6;
     --text-muted: #c3c7cf;
-    --border-color: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.08);
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
     --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.35);
     --tag-bg: #2d2440;
     --tag-text: #ddd8f0;
     --controls-bg: rgba(25, 21, 35, 0.88);
+    --primary: #8DA280;
+    --highlight: #EBCDD9;
 }
 
 /* Apply variables */
 body {
-    background-color: var(--bg);
-    color: var(--text-main);
+    background-color: var(--bg-primary);
+    color: var(--text-dark);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .hero-section {
-    background: linear-gradient(135deg, #b000f5 0%, #7b2ff7 55%, #4f46e5 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 55%, var(--secondary) 100%);
     padding: 100px 0 60px;
     text-align: center;
     border-bottom: none;
@@ -324,6 +365,7 @@ body {
 }
 
 .subtitle {
+    font-style: italic;
     color: rgba(255, 255, 255, 0.75);
 }
 
@@ -343,9 +385,9 @@ body {
 .filter-btn,
 .theme-toggle,
 .sort-select {
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-main);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dark);
     transition: all 0.25s ease;
 }
 
@@ -353,10 +395,10 @@ body {
     width: 44px;
     height: 44px;
     padding: 0;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 50%;
-    background: var(--card-bg);
-    color: var(--text-main);
+    background: var(--surface);
+    color: var(--text-dark);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -382,14 +424,14 @@ body {
 
 .filter-btn.active {
     background: var(--primary);
-    color: white;
+    color: var(--surface);
     border-color: var(--primary);
 }
 
 #search-input {
-    background: var(--card-bg);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
+    background: var(--surface);
+    color: var(--text-dark);
+    border: 1px solid var(--border);
 }
 
 #search-input::placeholder {
@@ -397,8 +439,8 @@ body {
 }
 
 .project-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: var(--surface);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow-soft);
     transition:
         transform 0.3s ease,
@@ -407,51 +449,31 @@ body {
         border-color 0.3s ease;
 }
 
-/* Hover */
-.project-card:hover {
-    transform: translateY(-8px) scale(1.015);
-    box-shadow: var(--shadow-hover);
+/* Card theme-layer: ensure bg/border adapt to dark mode */
+.project-card {
+    background: var(--surface);
+    border-color: rgba(176, 194, 174, 0.5);
 }
 
-/* image little zoom on hover */
+/* Smooth image zoom on hover (defined here for theme-layer specificity) */
 .card-image img {
-    transition: transform 0.45s ease;
+    transition: transform 0.5s ease;
 }
 
-.project-card:hover .card-image img {
-    transform: scale(1.04);
-}
-
+/* Subtle element transitions */
 .meta-info,
 h3,
 .description,
 .keyword,
 .project-link {
-    transition: color 0.3s ease, background-color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, opacity 0.25s ease;
 }
 
-h3,
-.card-content h3 {
-    color: var(--text-main);
-}
-
-.description {
-    color: var(--text-muted);
-}
-
-.keyword {
-    background: var(--tag-bg);
-    color: var(--tag-text);
-}
-
-/* Button Appears */
-.card-links {
-    opacity: 0.92;
-}
-
+/* Button reveal animation on hover — buttons slide up subtly */
 .card-links .project-link {
-    opacity: var(--button-fade);
-    transform: translateY(var(--button-move));
+    opacity: 0.9;
+    transform: translateY(3px);
+    transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .project-card:hover .card-links .project-link {
@@ -464,14 +486,14 @@ h3,
 }
 
 .project-card .card-links .project-link:nth-child(2) {
-    transition-delay: 0.06s;
+    transition-delay: 0.05s;
 }
 
 .project-card .card-links .project-link:nth-child(3) {
-    transition-delay: 0.1s;
+    transition-delay: 0.08s;
 }
 
-/* Make buttons visible on touchscreen devices by default. */
+/* Make buttons fully visible on touchscreen devices */
 @media (hover: none) {
     .card-links .project-link {
         opacity: 1;
@@ -481,15 +503,15 @@ h3,
 
 .main-footer {
     padding: 50px 0;
-    background: linear-gradient(135deg, #4b2e83 0%, #5b4bff 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 100%);
     color: rgba(255, 255, 255, 0.88);
     text-align: center;
     font-size: 0.95rem;
-    box-shadow: 0 -6px 20px rgba(75, 46, 131, 0.18);
+    box-shadow: 0 -6px 20px rgba(141, 162, 128, 0.18);
 }
 
 .main-footer a {
-    color: #ffd86b;
+    color: var(--highlight);
     text-decoration: none;
     font-weight: 600;
 }
@@ -542,10 +564,10 @@ h3,
     height: 44px;
     min-width: 220px;
     padding: 0 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border);
     border-radius: 999px;
-    background: var(--card-bg);
-    color: var(--text-main);
+    background: var(--surface);
+    color: var(--text-dark);
     font-size: 0.95rem;
     font-weight: 600;
     box-shadow: none;
@@ -557,7 +579,7 @@ h3,
 
 .filter-btn.active {
     background: var(--primary);
-    color: white;
+    color: var(--surface);
     border-color: var(--primary);
 }
 
@@ -570,8 +592,8 @@ body.dark-mode {
     --bg: #15121d;
     --text-main: #f3f4f6;
     --text-muted: #c3c7cf;
-    --white: #211b2d;
-    --primary: #8f6de1;
+    --surface: #211b2d;
+    --primary: #8DA280;
 }
 
 body.dark-mode .controls {
@@ -584,7 +606,7 @@ body.dark-mode .sort-select,
 body.dark-mode .theme-toggle {
     background: var(--card-bg);
     color: var(--text-main);
-    border-color: var(--border-color);
+    border-color: var(--border);
 }
 
 body.dark-mode .keyword {
@@ -600,11 +622,11 @@ body.dark-mode .subtitle {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(248, 249, 250, 0.92);
+    background: rgba(214, 226, 222, 0.92);
     backdrop-filter: blur(12px);
     padding: 18px 24px;
     margin-bottom: 40px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--border-soft);
 }
 
 .filter-group {
@@ -645,9 +667,9 @@ body.dark-mode .subtitle {
     height: 44px;
     padding: 0 18px;
     border-radius: 999px;
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-main);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dark);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -689,17 +711,17 @@ body.dark-mode .subtitle {
     height: 60px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg, #8a2cff 0%, #5b4bff 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 100%);
+    color: var(--surface);
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 12px 30px rgba(91, 75, 255, 0.3);
+    box-shadow: 0 12px 30px rgba(141, 162, 128, 0.3);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .chatbot-toggle:hover {
     transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 16px 36px rgba(91, 75, 255, 0.38);
+    box-shadow: 0 16px 36px rgba(76, 140, 138, 0.38);
 }
 
 .chatbot-window {
@@ -709,10 +731,10 @@ body.dark-mode .subtitle {
     width: 360px;
     max-width: calc(100vw - 32px);
     height: 520px;
-    background: var(--card-bg, #ffffff);
-    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 20px 50px rgba(47, 58, 52, 0.18);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -724,8 +746,8 @@ body.dark-mode .subtitle {
 
 .chatbot-header {
     padding: 16px 18px;
-    background: linear-gradient(135deg, #8a2cff 0%, #5b4bff 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 100%);
+    color: var(--surface);
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -735,7 +757,7 @@ body.dark-mode .subtitle {
 .chatbot-header h3 {
     margin: 0 0 4px 0;
     font-size: 1rem;
-    color: white;
+    color: var(--surface);
 }
 
 .chatbot-header p {
@@ -748,7 +770,7 @@ body.dark-mode .subtitle {
 .chatbot-close {
     background: transparent;
     border: none;
-    color: white;
+    color: var(--surface);
     font-size: 1rem;
     cursor: pointer;
     padding: 2px 6px;
@@ -758,7 +780,7 @@ body.dark-mode .subtitle {
     flex: 1;
     padding: 16px;
     overflow-y: auto;
-    background: var(--card-bg, #ffffff);
+    background: var(--surface);
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -775,15 +797,15 @@ body.dark-mode .subtitle {
 
 .bot-message {
     align-self: flex-start;
-    background: #f3f0ff;
-    color: #2d3436;
-    border: 1px solid rgba(138, 44, 255, 0.12);
+    background: var(--bg-alt);
+    color: var(--text-dark);
+    border: 1px solid var(--border-soft);
 }
 
 .user-message {
     align-self: flex-end;
-    background: #8a2cff;
-    color: white;
+    background: var(--primary);
+    color: var(--surface);
 }
 
 .chatbot-quick-actions {
@@ -791,14 +813,14 @@ body.dark-mode .subtitle {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
-    background: var(--bg-secondary, #f7f5fc);
+    border-top: 1px solid var(--border);
+    background: var(--bg-primary);
 }
 
 .quick-action-btn {
-    border: 1px solid rgba(138, 44, 255, 0.18);
-    background: white;
-    color: #4b2e83;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--link-color);
     border-radius: 999px;
     padding: 8px 12px;
     font-size: 0.8rem;
@@ -807,52 +829,52 @@ body.dark-mode .subtitle {
 }
 
 .quick-action-btn:hover {
-    background: #f3f0ff;
+    background: var(--bg-alt);
 }
 
 .chatbot-input-area {
     display: flex;
     gap: 10px;
     padding: 12px;
-    border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
-    background: var(--card-bg, #ffffff);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
 }
 
 .chatbot-input {
     flex: 1;
     height: 44px;
-    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 0 14px;
     font-size: 0.92rem;
     outline: none;
-    background: var(--card-bg, #ffffff);
-    color: var(--text-main, #2d3436);
+    background: var(--surface);
+    color: var(--text-dark);
 }
 
 .chatbot-input:focus {
-    border-color: #8a2cff;
-    box-shadow: 0 0 0 3px rgba(138, 44, 255, 0.12);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(141, 162, 128, 0.2);
 }
 
 .chatbot-send {
     border: none;
     border-radius: 12px;
     padding: 0 16px;
-    background: #8a2cff;
-    color: white;
+    background: var(--primary);
+    color: var(--surface);
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s ease;
 }
 
 .chatbot-send:hover {
-    background: #7330df;
+    background: var(--link-hover);
 }
 
 body.dark-mode .chatbot-window {
     background: var(--card-bg);
-    border-color: var(--border-color);
+    border-color: var(--border);
 }
 
 body.dark-mode .bot-message {
@@ -880,7 +902,7 @@ body.dark-mode .quick-action-btn {
 }
 
 .main-footer a {
-    color: #ffd86b;
+    color: var(--highlight);
     text-decoration: none;
     font-weight: 600;
     transition: opacity 0.2s ease;
@@ -893,25 +915,25 @@ body.dark-mode .quick-action-btn {
 
 .main-footer {
     padding: 50px 0;
-    background: linear-gradient(135deg, #4b2e83 0%, #5b4bff 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 100%);
     color: rgba(255, 255, 255, 0.88);
     text-align: center;
     font-size: 0.95rem;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: 1px solid var(--border-accent);
 }
 
 .main-footer {
     padding: 50px 0;
-    background: linear-gradient(135deg, #4b2e83 0%, #5b4bff 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--link-color) 100%);
     color: rgba(255, 255, 255, 0.88);
     text-align: center;
     font-size: 0.95rem;
     border-top: 2px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 -10px 25px rgba(75, 46, 131, 0.22);
+    box-shadow: 0 -10px 25px rgba(141, 162, 128, 0.22);
 }
 
 .main-footer a {
-    color: #ffd86b;
+    color: var(--highlight);
     text-decoration: none;
     font-weight: 600;
     transition: opacity 0.2s ease, color 0.2s ease;
@@ -920,7 +942,7 @@ body.dark-mode .quick-action-btn {
 .main-footer a:hover {
     text-decoration: underline;
     opacity: 0.85;
-    color: #ffe89a;
+    color: var(--bg-alt);
 }
 
 .project-grid {
@@ -930,27 +952,218 @@ body.dark-mode .quick-action-btn {
     padding-bottom: 120px;
 }
 
+
+/* =========================
+   Premium Card System
+========================= */
+
+/* Card content area — generous padding, flex column */
+.card-content {
+    padding: 22px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Team member names — quiet, secondary */
+.meta-info {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 10px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    opacity: 0.85;
+}
+
+/* Title block */
+.project-title {
+    margin-bottom: 14px;
+}
+
+h3.app-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 5px;
+}
+
+p.app-context {
+    font-size: 0.83rem;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.45;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Read more button */
+.read-more-btn {
+    background: none;
+    border: none;
+    color: #4C8C8A;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 0 14px;
+    margin: 0;
+    text-align: left;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.read-more-btn:hover {
+    color: #2F3A34;
+    opacity: 0.85;
+}
+
+/* Keywords */
+.keywords-container {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+/* Divider + button row */
+.card-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid rgba(176, 194, 174, 0.3);
+    margin-top: 0;
+}
+
+/* === Spring Pill Buttons === */
 .project-link {
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-main);
-    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    padding: 6px 14px;
     border-radius: 999px;
     font-weight: 600;
+    font-size: 0.78rem;
+    border: 1px solid var(--border-accent);
+    background: var(--surface);
+    color: var(--link-color);
+    transition: background-color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
 }
 
 .project-link:hover {
-    background: #f3f0ff;
+    background: var(--bg-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(141, 162, 128, 0.18);
+    text-decoration: none;
 }
 
+/* Video: soft teal tint */
 .project-link.video-link {
-    background: #fff1f0;
-    color: #c0392b;
-    border-color: #ffd0cc;
+    background: var(--secondary);
+    color: var(--link-hover);
+    border-color: var(--secondary);
 }
 
+.project-link.video-link:hover {
+    background: var(--border-soft);
+    border-color: var(--border);
+}
+
+/* Interactive: sage green pill */
 .project-link.interactive-link {
-    background: #1a7a4a;
-    color: white;
-    border: none;
+    background: var(--primary);
+    color: var(--surface);
+    border-color: var(--primary);
+}
+
+.project-link.interactive-link:hover {
+    background: var(--link-hover);
+    border-color: var(--link-hover);
+}
+
+/* Dark mode overrides */
+body.dark-mode h3.app-name {
+    color: var(--text-main);
+}
+
+body.dark-mode .card-links {
+    border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+body.dark-mode .keyword {
+    background: rgba(235, 205, 217, 0.1);
+    border-color: rgba(235, 205, 217, 0.2);
+    color: var(--text-muted);
+}
+
+body.dark-mode .project-link {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--secondary);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .project-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+}
+
+body.dark-mode .project-link.video-link {
+    background: rgba(184, 212, 212, 0.1);
+    color: var(--secondary);
+    border-color: rgba(184, 212, 212, 0.2);
+}
+
+body.dark-mode .project-link.interactive-link {
+    background: var(--primary);
+    color: var(--surface);
+    border-color: var(--primary);
+}
+
+body.dark-mode .team-badge {
+    background: rgba(30, 25, 42, 0.88);
+    color: var(--text-muted);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Smoother hover abstract reveal */
+.description {
+    display: block !important;
+    max-height: 5.3em;
+    overflow: hidden;
+    position: relative;
+    opacity: 0.92;
+    transition:
+        max-height 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.25s ease;
+}
+
+.project-card:hover .description {
+    max-height 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+}
+
+.description::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2.2em;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        var(--surface)
+    );
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.project-card:hover .description::after {
+    opacity: 0;
 }
