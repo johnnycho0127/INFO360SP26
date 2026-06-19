@@ -589,12 +589,6 @@
 
         /* FINAL OVERRIDE: force consistent card grid + rounded corners */
 
-        .project-grid {
-            display: grid !important;
-            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-            gap: 30px !important;
-        }
-        
         .project-card,
         .project-card:hover {
             border-radius: 20px !important;
@@ -602,7 +596,7 @@
         }
         
         .card-image,
-        .card-image:hover {
+        .project-card:hover .card-image {
             border-radius: 20px 20px 0 0 !important;
             overflow: hidden !important;
         }
@@ -612,13 +606,17 @@
             border-radius: 20px 20px 0 0 !important;
         }
         
-        @media (max-width: 1000px) {
+        .project-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+        
+        @media (max-width: 900px) {
             .project-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             }
         }
         
-        @media (max-width: 700px) {
+        @media (max-width: 650px) {
             .project-grid {
                 grid-template-columns: 1fr !important;
             }
