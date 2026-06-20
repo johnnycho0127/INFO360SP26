@@ -587,6 +587,22 @@
             margin-bottom: 6px;
         }
 
+        /* Card fade-in animation */
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-card {
+            animation: cardFadeIn 0.5s ease both;
+        }
+
         /* FINAL OVERRIDE: force consistent card grid + rounded corners */
 
         .project-card,
@@ -1624,6 +1640,11 @@
             }
 
             filterProjects();
+
+            // Stagger card fade-in on load
+            projectCards.forEach((card, i) => {
+                card.style.animationDelay = `${i * 60}ms`;
+            });
 
             /* =========================
                Chatbot Logic
