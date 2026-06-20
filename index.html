@@ -1538,8 +1538,10 @@
                         .join(' ');
 
                     const category = (card.dataset.category || '').toLowerCase();
+                    const teamNum = (card.dataset.team || '').toLowerCase();
+                    const teamLabel = `team ${teamNum}`;
 
-                    const combinedText = `${title} ${teamInfo} ${description} ${keywords} ${category}`;
+                    const combinedText = `${title} ${teamInfo} ${description} ${keywords} ${category} ${teamNum} ${teamLabel}`;
 
                     const matchesSearch = combinedText.includes(currentSearchTerm);
                     const matchesFilter = currentFilter === 'all' || category.includes(currentFilter);
@@ -1798,7 +1800,7 @@
                     text.includes('how do i use this site') ||
                     text.includes('what can i do here')
                 ) {
-                    return 'You can browse projects, use the category filters, sort by team or alphabetically, search by team/member/keyword, and open each team's proposal, video, or interactive demo.';
+                    return "You can browse projects, use the category filters, sort by team or alphabetically, search by team/member/keyword, and open each team's proposal, video, or interactive demo.";
                 }
 
                 if (
@@ -1806,7 +1808,7 @@
                     text.includes('about this website') ||
                     text.includes('what is this site')
                 ) {
-                    return 'This website showcases 24 INFO 360 student design projects. You can explore each team's topic, members, keywords, and available links.';
+                    return "This website showcases 24 INFO 360 student design projects. You can explore each team's topic, members, keywords, and available links.";
                 }
 
                 if (
