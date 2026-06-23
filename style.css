@@ -336,24 +336,25 @@ body {
 }
 
 body.dark-mode {
-    /*
-     * Dark mode has no approved tokens. These values are held over from the
-     * original CSS. Recommend adding a dark-mode palette to your design system,
-     * e.g.: --bg-dark, --surface-dark, --text-dark-mode, --border-dark.
-     */
-    --bg: #15121d;
-    --bg-secondary: #1d1827;
-    --card-bg: #211b2d;
-    --text-main: #f3f4f6;
-    --text-muted: #c3c7cf;
-    --border: rgba(255, 255, 255, 0.08);
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
-    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.35);
-    --tag-bg: #2d2440;
-    --tag-text: #ddd8f0;
-    --controls-bg: rgba(25, 21, 35, 0.88);
-    --primary: #8DA280;
-    --highlight: #EBCDD9;
+    --bg-primary:     #0d1a19;
+    --bg-alt:         #112220;
+    --surface:        #172e2b;
+    --surface-tint:   rgba(30, 70, 65, 0.2);
+    --border:         rgba(100, 160, 150, 0.18);
+    --border-soft:    rgba(100, 160, 150, 0.12);
+    --border-accent:  rgba(100, 160, 150, 0.3);
+    --text-dark:      #e4efed;
+    --text-muted:     #8db5af;
+    --text-light:     #e4efed;
+    --link-color:     #6fc2b8;
+    --link-hover:     #50a89e;
+    --primary:        #5f9e7a;
+    --secondary:      #2a4f4c;
+    --highlight:      #2a3d3b;
+    --shadow:         0 10px 30px rgba(0, 0, 0, 0.4);
+
+    background-color: var(--bg-primary);
+    color: var(--text-dark);
 }
 
 /* Apply variables */
@@ -595,35 +596,145 @@ h3,
     display: none !important;
 }
 
-/* Dark mode */
-body.dark-mode {
-    --bg: #15121d;
-    --text-main: #f3f4f6;
-    --text-muted: #c3c7cf;
-    --surface: #211b2d;
-    --primary: #8DA280;
+/* Dark mode element overrides */
+body.dark-mode .hero-section {
+    background: linear-gradient(135deg, #1a3d35 0%, #0f2e2b 55%, #0d2422 100%);
+}
+
+body.dark-mode .hero-section h1 {
+    color: #e4efed;
+}
+
+body.dark-mode .hero-section .course-code {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e4efed;
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 body.dark-mode .controls {
-    background: rgba(25, 21, 35, 0.88);
+    background: rgba(13, 26, 25, 0.92);
+    border-bottom-color: var(--border);
 }
 
-body.dark-mode #search-input,
-body.dark-mode .filter-btn,
-body.dark-mode .sort-select,
-body.dark-mode .theme-toggle {
-    background: var(--card-bg);
-    color: var(--text-main);
+body.dark-mode .controls-panel {
+    background: rgba(23, 46, 43, 0.95);
     border-color: var(--border);
 }
 
-body.dark-mode .keyword {
-    background: #2d2440;
-    color: #ddd8f0;
+body.dark-mode #search-input,
+body.dark-mode .sort-select,
+body.dark-mode .theme-toggle {
+    background: #112220;
+    color: var(--text-dark);
+    border-color: var(--border);
 }
 
-body.dark-mode .subtitle {
-    color: rgba(255, 255, 255, 0.75);
+body.dark-mode #search-input::placeholder {
+    color: var(--text-muted);
+}
+
+body.dark-mode .filter-btn {
+    background: #112220;
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+body.dark-mode .filter-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+body.dark-mode .project-card {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .project-card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .card-image::after {
+    background: linear-gradient(to bottom, transparent, var(--surface));
+}
+
+body.dark-mode h3,
+body.dark-mode h3.app-name {
+    color: var(--text-dark);
+}
+
+body.dark-mode .meta-info,
+body.dark-mode .description,
+body.dark-mode .app-context {
+    color: var(--text-muted);
+}
+
+body.dark-mode .keyword {
+    background: rgba(95, 158, 122, 0.12);
+    border-color: rgba(95, 158, 122, 0.25);
+    color: #7ecfbc;
+}
+
+body.dark-mode .card-links {
+    border-top-color: var(--border);
+}
+
+body.dark-mode .project-link {
+    background: #112220;
+    color: var(--link-color);
+    border-color: var(--border-accent);
+}
+
+body.dark-mode .project-link:hover {
+    background: #1e3a36;
+}
+
+body.dark-mode .project-link.video-link {
+    background: #1a3530;
+    color: #6fc2b8;
+    border-color: rgba(111, 194, 184, 0.2);
+}
+
+body.dark-mode .project-link.interactive-link {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+body.dark-mode .team-badge {
+    background: rgba(13, 26, 25, 0.85);
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+body.dark-mode .share-btn {
+    background: #112220;
+    color: var(--text-muted);
+    border-color: var(--border-accent);
+}
+
+body.dark-mode .share-btn:hover {
+    background: #1e3a36;
+    color: var(--link-color);
+}
+
+body.dark-mode .main-footer {
+    background: #091412;
+    color: var(--text-muted);
+    border-top-color: var(--border);
+}
+
+body.dark-mode .main-footer a {
+    color: var(--link-color);
+}
+
+body.dark-mode #no-results h3 {
+    color: var(--text-dark);
+}
+
+body.dark-mode #no-results p {
+    color: var(--text-muted);
 }
 
 .controls {
@@ -1094,49 +1205,6 @@ p.app-context {
     border-color: var(--link-hover);
 }
 
-/* Dark mode overrides */
-body.dark-mode h3.app-name {
-    color: var(--text-main);
-}
-
-body.dark-mode .card-links {
-    border-top-color: rgba(255, 255, 255, 0.06);
-}
-
-body.dark-mode .keyword {
-    background: rgba(235, 205, 217, 0.1);
-    border-color: rgba(235, 205, 217, 0.2);
-    color: var(--text-muted);
-}
-
-body.dark-mode .project-link {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--secondary);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-body.dark-mode .project-link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: none;
-}
-
-body.dark-mode .project-link.video-link {
-    background: rgba(184, 212, 212, 0.1);
-    color: var(--secondary);
-    border-color: rgba(184, 212, 212, 0.2);
-}
-
-body.dark-mode .project-link.interactive-link {
-    background: var(--primary);
-    color: var(--surface);
-    border-color: var(--primary);
-}
-
-body.dark-mode .team-badge {
-    background: rgba(30, 25, 42, 0.88);
-    color: var(--text-muted);
-    border-color: rgba(255, 255, 255, 0.08);
-}
 
 /* Smoother hover abstract reveal */
 .description {
