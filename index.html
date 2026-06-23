@@ -695,7 +695,21 @@
             </div>
 
             <div class="nav-tools">
-            <input type="text" id="search-input" placeholder="Search projects, teams, keywords...">
+            <div style="position:relative;display:flex;align-items:center;">
+                <input type="text" id="search-input" placeholder="Search projects, teams, keywords..." style="padding-right:36px;">
+                <button id="search-clear" aria-label="Clear search" style="
+                    display:none;
+                    position:absolute;
+                    right:10px;
+                    background:none;
+                    border:none;
+                    cursor:pointer;
+                    font-size:1rem;
+                    color:var(--text-muted);
+                    line-height:1;
+                    padding:0;
+                ">✕</button>
+            </div>
 
             <select id="sort-select" class="sort-select">
                 <option value="team">Sort by team</option>
@@ -1667,9 +1681,22 @@
                 });
             }
 
+            const searchClear = document.getElementById('search-clear');
+
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
                     currentSearchTerm = e.target.value.toLowerCase();
+                    searchClear.style.display = e.target.value ? 'block' : 'none';
+                    filterProjects();
+                });
+            }
+
+            if (searchClear) {
+                searchClear.addEventListener('click', () => {
+                    searchInput.value = '';
+                    currentSearchTerm = '';
+                    searchClear.style.display = 'none';
+                    searchInput.focus();
                     filterProjects();
                 });
             }
