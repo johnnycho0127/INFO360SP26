@@ -587,6 +587,36 @@
             margin-bottom: 6px;
         }
 
+        /* Share button */
+        .share-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid var(--border-accent);
+            background: var(--surface);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.18s ease;
+            white-space: nowrap;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .share-btn:hover {
+            background: var(--bg-primary);
+            color: var(--link-color);
+            transform: translateY(-1px);
+        }
+
+        .share-btn.copied {
+            background: #e6f4ea;
+            color: var(--_success);
+            border-color: var(--_success);
+        }
+
         /* Card fade-in animation */
         @keyframes cardFadeIn {
             from {
@@ -1475,7 +1505,7 @@
     ">↑</button>
 
     <!-- Video Modal -->
-    <div id="video-modal" class="hidden" style="position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;">
+    <div id="video-modal" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
         <div style="position:relative;width:90%;max-width:860px;aspect-ratio:16/9;">
             <button id="video-modal-close" style="position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:1.8rem;cursor:pointer;line-height:1;">✕</button>
             <iframe id="video-modal-iframe" width="100%" height="100%" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" style="border-radius:12px;"></iframe>
@@ -1661,6 +1691,29 @@
             }
 
             filterProjects();
+
+            // Share buttons — inject into every card and copy project link on click
+            document.querySelectorAll('.project-card').forEach(card => {
+                const projectLink = card.querySelector('.interactive-link');
+                if (!projectLink) return;
+
+                const shareBtn = document.createElement('button');
+                shareBtn.className = 'share-btn';
+                shareBtn.innerHTML = '🔗 Share';
+
+                shareBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(projectLink.href).then(() => {
+                        shareBtn.innerHTML = '✓ Copied!';
+                        shareBtn.classList.add('copied');
+                        setTimeout(() => {
+                            shareBtn.innerHTML = '🔗 Share';
+                            shareBtn.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+
+                card.querySelector('.card-links').appendChild(shareBtn);
+            });
 
             // Back to top button
             const backToTop = document.getElementById('back-to-top');
@@ -2026,12 +2079,12 @@
 
             function openVideoModal(videoId) {
                 videoModalIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                videoModal.classList.remove('hidden');
+                videoModal.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
 
             function closeVideoModal() {
-                videoModal.classList.add('hidden');
+                videoModal.style.display = 'none';
                 videoModalIframe.src = '';
                 document.body.style.overflow = '';
             }
