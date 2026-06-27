@@ -409,10 +409,20 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            transform-origin: bottom right;
+            pointer-events: auto;
+            transition:
+                opacity 0.22s ease,
+                transform 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .hidden-chat {
-            display: none !important;
+        .chatbot-window.hidden-chat {
+            opacity: 0;
+            transform: scale(0.72) translateY(24px);
+            pointer-events: none;
         }
 
         .chatbot-header {
@@ -463,10 +473,11 @@
             border-radius: 14px;
             font-size: 0.92rem;
             line-height: 1.5;
-            white-space: pre-wrap;
+            white-space: pre-line;
         }
 
         .bot-message {
+            white-space: pre-line;
             align-self: flex-start;
             background: var(--bg-alt);
             color: var(--text-dark);
@@ -1544,23 +1555,13 @@
         <div id="chatbot-window" class="chatbot-window hidden-chat">
             <div class="chatbot-header">
                 <div>
-                    <h3>Portfolio Assistant</h3>
-                    <p>Ask about projects, teams, or how to use this site.</p>
+                    <h3>INFO 360 TA</h3>
+                    <p>Need help with something specific? Ask and I can help.</p>
                 </div>
                 <button id="chatbot-close" class="chatbot-close" aria-label="Close assistant">✕</button>
             </div>
 
             <div id="chatbot-messages" class="chatbot-messages">
-                <div class="chatbot-message bot-message chatbot-welcome-message">
-                    <strong>Hi! I'm your Portfolio Assistant.</strong><br><br>
-                    I can help you:
-                    <ul class="chatbot-list">
-                        <li>Find a team</li>
-                        <li>Locate AI, accessibility, or mental health projects</li>
-                        <li>Open demos, proposals, and videos</li>
-                        <li>Explain how to use this website</li>
-                    </ul>
-                </div>
             </div>
 
             <div class="chatbot-quick-actions">
@@ -1571,11 +1572,15 @@
             </div>
 
             <div class="chatbot-input-area">
-                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask a question...">
-                <button id="chatbot-send" class="chatbot-send">Send</button>
+                <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask anything">
+                <button id="chatbot-send" class="chatbot-send" aria-label="Send message">↑</button>
             </div>
 
-    <script>
+            </div> <!-- closes chatbot-window -->
+            </div> <!-- closes chatbot-container -->
+
+            <script>
+
         function toggleAbstract(btn) {
             const description = btn.previousElementSibling;
             const isExpanded = description.classList.contains('expanded');
@@ -1767,6 +1772,10 @@
             /* =========================
                Chatbot Logic
             ========================= */
+
+            let welcomeShown = false;
+            let botBusy = false;
+
             const chatbotToggle = document.getElementById('chatbot-toggle');
             const chatbotWindow = document.getElementById('chatbot-window');
             const chatbotClose = document.getElementById('chatbot-close');
@@ -1774,6 +1783,17 @@
             const chatbotInput = document.getElementById('chatbot-input');
             const chatbotSend = document.getElementById('chatbot-send');
             const quickActionButtons = document.querySelectorAll('.quick-action-btn');
+            
+            function setBotBusy(isBusy) {
+                botBusy = isBusy;
+
+                chatbotSend.disabled = isBusy;
+                chatbotInput.disabled = isBusy;
+
+                quickActionButtons.forEach(button => {
+                    button.disabled = isBusy;
+                });
+            }
 
             function addChatMessage(text, sender = 'bot') {
                 const message = document.createElement('div');
@@ -1782,6 +1802,54 @@
                 message.textContent = text;
                 chatbotMessages.appendChild(message);
                 chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            function showTypingIndicator() {
+                const typing = document.createElement('div');
+                typing.classList.add('chatbot-message', 'bot-message', 'typing-message');
+                typing.innerHTML = `
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+                chatbotMessages.appendChild(typing);
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                return typing;
+            }
+
+            function typeBotMessage(text, speed = 18, onComplete = null) {
+                const message = document.createElement('div');
+                message.classList.add('chatbot-message', 'bot-message');
+                chatbotMessages.appendChild(message);
+
+                const textSpan = document.createElement('span');
+                const cursor = document.createElement('span');
+                cursor.classList.add('typing-cursor');
+                cursor.textContent = '▍';
+
+                message.appendChild(textSpan);
+                message.appendChild(cursor);
+
+                let index = 0;
+
+                const interval = setInterval(() => {
+                    textSpan.textContent += text[index];
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                    index++;
+
+                    if (index >= text.length) {
+                        clearInterval(interval);
+                        cursor.remove();
+
+                        setBotBusy(false);
+
+                        if (onComplete) {
+                            onComplete();
+                        }
+                    }
+                }, speed);
             }
 
             function openChatbot() {
@@ -1794,7 +1862,42 @@
 
             if (chatbotToggle) {
                 chatbotToggle.addEventListener('click', () => {
+
+                    const isHidden = chatbotWindow.classList.contains('hidden-chat');
+
                     chatbotWindow.classList.toggle('hidden-chat');
+
+                    // Only run the intro the very first time it's opened
+                    if (isHidden && !welcomeShown) {
+
+                        welcomeShown = true;
+
+                        setTimeout(() => {
+                            chatbotWindow.classList.add('intro-typing');
+
+                            const typing = showTypingIndicator();
+
+                            setTimeout(() => {
+
+                                typing.remove();
+                                
+                                const welcomeText = `👋  Hi! I'm the INFO 360 TA.
+
+                                I'm here to help you explore this year's showcase.
+
+                                Ask me about projects, demos, technologies, or general navigation guides.`;
+
+                                typeBotMessage(welcomeText, 28, () => {
+                                    chatbotWindow.classList.remove('intro-typing');
+                                    chatbotWindow.classList.add('intro-complete');
+                                });
+
+                            }, 700);
+
+                        }, 300);
+
+                    }
+
                 });
             }
 
@@ -2047,20 +2150,54 @@
                 return "Sorry, I couldn't find a good match for that. Try asking about a team number, a topic like AI or accessibility, or how to use the website.";
             }
 
+            function getThinkingDelay() {
+                return Math.floor(Math.random() * 600) + 650;
+            }
+
+            
             function sendChatbotMessage(customText = null) {
+                if (botBusy) {
+                    return;
+                }
+
                 const userText = customText || chatbotInput.value.trim();
 
-                if (!userText) return;
+                if (!userText) {
+                    return;
+                }
+
+                botBusy = true;
+                chatbotInput.disabled = true;
+                chatbotSend.disabled = true;
+
+                quickActionButtons.forEach(button => {
+                    button.disabled = true;
+                });
 
                 addChatMessage(userText, 'user');
-                const response = handlePortfolioQuestion(userText);
-                addChatMessage(response, 'bot');
 
                 if (!customText) {
                     chatbotInput.value = '';
                 }
 
-                openChatbot();
+                const response = handlePortfolioQuestion(userText);
+                const typing = showTypingIndicator();
+
+                setTimeout(() => {
+                    typing.remove();
+
+                    typeBotMessage(response, 18, () => {
+                        botBusy = false;
+                        chatbotInput.disabled = false;
+                        chatbotSend.disabled = false;
+
+                        quickActionButtons.forEach(button => {
+                            button.disabled = false;
+                        });
+
+                        chatbotInput.focus();
+                    });
+                }, getThinkingDelay());
             }
 
             if (chatbotSend) {
