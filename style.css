@@ -95,7 +95,7 @@ body {
     border: 2px solid var(--primary);
     background-color: var(--surface);
     color: var(--primary);
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .filter-btn.active,
@@ -412,7 +412,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 400;
     box-shadow: none;
     cursor: pointer;
     overflow: hidden;
@@ -578,7 +578,7 @@ h3,
     background: var(--surface);
     color: var(--text-dark);
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 400;
     box-shadow: none;
     cursor: pointer;
     appearance: auto;
@@ -793,7 +793,7 @@ body.dark-mode #no-results p {
     align-items: center;
     justify-content: center;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 400;
     white-space: nowrap;
     box-shadow: none;
 }
@@ -1114,7 +1114,7 @@ p.app-context {
     font-style: italic;
     color: var(--text-muted);
     line-height: 1.45;
-    font-weight: 400;
+    font-weight: 600;
     margin: 0;
 }
 
@@ -1302,7 +1302,7 @@ p.app-context {
     background: transparent;
     color: var(--text-muted);
     font-size: 0.86rem;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
@@ -1334,7 +1334,7 @@ p.app-context {
     background: var(--surface);
     color: var(--text-dark);
     font-size: 0.88rem;
-    font-weight: 600;
+    font-weight: 400;
     box-shadow: none;
 }
 
