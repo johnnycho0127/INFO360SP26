@@ -290,8 +290,28 @@ document.addEventListener('DOMContentLoaded', () => {
             .join('\n');
     }
 
+    function showRandomProject() {
+        const allCards = getAllCards().filter(card => !card.classList.contains('hidden'));
+        if (allCards.length === 0) return "There are no visible projects to pick from right now.";
+        const card = allCards[Math.floor(Math.random() * allCards.length)];
+        const title = card.querySelector('h3')?.textContent?.trim() || 'a project';
+        const team = card.dataset.team || '?';
+        highlightCard(card);
+        return `Here's a random pick — Team ${team}: ${title}`;
+    }
+
     function handlePortfolioQuestion(message) {
         const text = message.trim().toLowerCase();
+
+        if (
+            text.includes('surprise me') ||
+            text.includes('random project') ||
+            text.includes('pick one') ||
+            text.includes('pick a project') ||
+            text === 'random'
+        ) {
+            return showRandomProject();
+        }
 
         if (
             text === 'hi' ||
