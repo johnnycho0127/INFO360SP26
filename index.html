@@ -1679,8 +1679,8 @@
                     });
                 } else if (sortSelect.value === 'interactive' || sortSelect.value === 'demo') {
                     visibleCards.sort((a, b) => {
-                        const aDemo = a.querySelector('.video-link') ? 1 : 0;
-                        const bDemo = b.querySelector('.video-link') ? 1 : 0;
+                        const aDemo = a.dataset.hasDemo === 'true' ? 1 : 0;
+                        const bDemo = b.dataset.hasDemo === 'true' ? 1 : 0;
                         return bDemo - aDemo;
                     });
                 }
@@ -2013,14 +2013,14 @@
             }
 
             function listDemoProjects() {
-                const demoProjects = getProjectData().filter(project => project.videoLink);
+                const demoProjects = getProjectData().filter(project => project.hasDemo);
 
                 if (demoProjects.length === 0) {
                     return 'I could not find any projects with demos.';
                 }
 
                 const names = demoProjects.map(project => `Team ${project.team}: ${project.title}`);
-                return `Projects with video demos (${demoProjects.length}):\n${names.join('\n')}`;
+                return `Projects with interactive demos (${demoProjects.length}):\n${names.join('\n')}`;
             }
 
             function findProjectsByKeyword(keyword) {
