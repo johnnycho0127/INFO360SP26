@@ -1679,8 +1679,8 @@
                     });
                 } else if (sortSelect.value === 'interactive' || sortSelect.value === 'demo') {
                     visibleCards.sort((a, b) => {
-                        const aDemo = a.dataset.hasDemo === 'true' ? 1 : 0;
-                        const bDemo = b.dataset.hasDemo === 'true' ? 1 : 0;
+                        const aDemo = a.querySelector('.video-link') ? 1 : 0;
+                        const bDemo = b.querySelector('.video-link') ? 1 : 0;
                         return bDemo - aDemo;
                     });
                 }
@@ -2013,14 +2013,14 @@
             }
 
             function listDemoProjects() {
-                const demoProjects = getProjectData().filter(project => project.hasDemo);
+                const demoProjects = getProjectData().filter(project => project.videoLink);
 
                 if (demoProjects.length === 0) {
                     return 'I could not find any projects with demos.';
                 }
 
                 const names = demoProjects.map(project => `Team ${project.team}: ${project.title}`);
-                return `Projects with demos:\n${names.join('\n')}`;
+                return `Projects with video demos (${demoProjects.length}):\n${names.join('\n')}`;
             }
 
             function findProjectsByKeyword(keyword) {
@@ -2051,11 +2051,31 @@
                     .join('\n');
             }
 
+            function showRandomProject() {
+                const allCards = getAllCards().filter(card => !card.classList.contains('hidden'));
+                if (allCards.length === 0) return "There are no visible projects to pick from right now.";
+                const card = allCards[Math.floor(Math.random() * allCards.length)];
+                const title = card.querySelector('h3')?.textContent?.trim() || 'a project';
+                const team = card.dataset.team || '?';
+                highlightCard(card);
+                return `Here's a random pick — Team ${team}: ${title}`;
+            }
+
             function handlePortfolioQuestion(message) {
                 const text = message.trim().toLowerCase();
 
                 if (!text) {
                     return 'Please type a question.';
+                }
+
+                if (
+                    text.includes('surprise me') ||
+                    text.includes('random project') ||
+                    text.includes('pick one') ||
+                    text.includes('pick a project') ||
+                    text === 'random'
+                ) {
+                    return showRandomProject();
                 }
 
                 if (
